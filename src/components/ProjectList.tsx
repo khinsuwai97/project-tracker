@@ -7,7 +7,7 @@ import type { Project } from '../types'
 const ProjectList = () => {
 
     const [loading, setLoading] = useState(false)
-    const { project, setProject } = useProjectContext()
+    const { project, setProject, filter, search } = useProjectContext()
 
     const stausColor = (status: string) => {
         switch (status) {
@@ -46,17 +46,27 @@ const ProjectList = () => {
         fetchProjects()
     }, [])
 
+
+
+    const visibleproject = project?.filter(d => d.status === filter || filter === "all")
+
+
+    const filterProject = visibleproject?.filter(d => search === "" ? d : d.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()))
+
+
+
+
     if (loading) {
         return <div className='text-center mt-4'>Loading...</div>
     }
 
-    if (!loading && project?.length === 0) {
+    if (!loading && filterProject?.length === 0) {
         return <p className='text-center mt-4 text-lg'>No projects found.</p>
     }
 
     return (
         <>
-            {project?.length > 0 && project?.map((d: Project) => (
+            {(filterProject ?? []).length > 0 && (filterProject ?? []).map((d: Project) => (
                 <div className='mt-4 border-1 border-gray-300 rounded-lg shadow-md ring-gray-900/5 px-6 py-4 cursor-pointer'>
                     <div className='flex justify-between items-center'>
                         <div >

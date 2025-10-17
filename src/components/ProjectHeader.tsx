@@ -1,6 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { projectStatus } from '../data'
+import useProjectContext from '../hooks/useProjectContext'
 
 const ProjectHeader = () => {
+
+
+    const projectFilter = [
+        { id: "all", status: "All Projects" },
+
+    ];
+
+    projectStatus.map(data => {
+        return projectFilter.push({ id: data.id, status: data.status })
+    })
+
+
+    const { setFilter, setSearch } = useProjectContext()
+
+    // const [projectFilter, setProjectFilter] = useState(allStatus)
+
+    const handleFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+
+        setFilter(e.target.value as "all" | "completed" | "active" | "pending")
+    }
+
+
     return (
         <>
             <div className='flex justify-between items-center'>
@@ -8,11 +32,9 @@ const ProjectHeader = () => {
                     <p className='lg:text-lg text-md font-bold'>Projects</p>
                 </div>
                 <div>
-                    <select defaultValue="Pick a browser" className="select text-md font-normal min-w-[150px] !outline-none !focus:border-0">
-                        <option >All Projects</option>
-                        <option>Completed</option>
-                        <option>Active</option>
-                        <option>Pending</option>
+                    <select defaultValue="Pick a browser" className="select text-md font-normal min-w-[150px] !outline-none !focus:border-0" onChange={handleFilter}>
+                        {projectFilter.map(d => (<option value={d.id}>{d.status}</option>))}
+
                     </select>
                 </div>
             </div>
@@ -30,7 +52,7 @@ const ProjectHeader = () => {
                             <path d="m21 21-4.3-4.3"></path>
                         </g>
                     </svg>
-                    <input type="search" required placeholder="Search projects " />
+                    <input type="search" required placeholder="Search projects " onChange={(e) => setSearch(e.target.value)} />
                 </label>
             </div>
         </>

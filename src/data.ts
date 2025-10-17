@@ -51,3 +51,18 @@ export const mockProjects = [
     ],
   },
 ];
+
+export const projectStatus = [
+  {
+    id: "completed",
+    status: "Completed",
+  },
+  {
+    id: "active",
+    status: "Active",
+  },
+  {
+    id: "pending",
+    status: "pending",
+  },
+];
